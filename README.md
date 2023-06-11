@@ -72,3 +72,31 @@ V.start(rate_hz=10)
 
 See [home page](http://donkeycar.com), [docs](http://docs.donkeycar.com)
 or join the [Discord server](http://www.donkeycar.com/community.html) to learn more.
+
+# Q&A
+Use https://www.waveshare.net/wiki/PiRacer_Pro_AI_Kit for reference if you use PiRacer Pro AI Kit.
+### some pitfalls:
+- The joystick keys are mis-mapped, pls be aware of this and try to find the correct key mapping.
+- do not need to create env in pi when setting the raspberry pi env.
+- change the software source for ubuntu and pip, suggest using tsinghua sources.
+- when training data, if you encounter cv2 issues like "str object doesn't have property decode", try to downgrade the h5py version to lower version by running `pip install h5py==2.10.0 --force-reinstall`.
+- when setting up Linux PC, clone this repo instead of waveshare/donkeycar and checkout master branch to align with Pi.
+- when training data, don't use `python manage.py train --tub /vagrant/data --model ./models/mypilot.h5` use `donkey train --tub /vagrant/data --model ./models/mypilot.h5` instead.
+- To enable displayer, use `python -m "pidisplay.display_server"`  the systemctl service doesn't work, or try to find the RC and fix it.
+### some commands:
+
+```
+# copy data between PC and pi
+scp -r pi@192.168.0.106:/home/pi/mycar/data .
+scp -r models pi@<ip address of pi>:~/mycar/models/
+
+# run with model
+python3 manage.py drive --model ~/mycar/models/mypilot.h5
+
+# train data, "/vagrant/data" is supposed to contain a manifest.json file and multiple catalog files and manifest files and images.
+donkey train --tub /vagrant/data --model ./models/mypilot.h5
+```
+
+
+
+
